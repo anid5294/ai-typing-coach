@@ -1,35 +1,16 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from "react";
+import { LoginForm }     from "./components/LoginForm";
+import { TypingArea }    from "./components/TypingArea";
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  // 1) hold the JWT here
+  const [token, setToken] = useState<string|null>(null);
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+  // 2) if we don't have one yet, show the login form
+  if (!token) {
+    return <LoginForm onLogin={setToken} />;
+  }
+
+  // 3) once we do, render the typing area
+  return <TypingArea token={token} />;
 }
-
-export default App
