@@ -17,7 +17,7 @@ class Session(Base):
     ended_at   = Column(DateTime(timezone=True), nullable=True)
     events     = relationship("KeystrokeEvent", back_populates="session")
     target_text = Column(Text, nullable=False)
-    user_input = Column(Text, nullable=False)
+    user_input = Column(Text, nullable=True)
 
 class KeystrokeEvent(Base):
     __tablename__ = "keystroke_events"

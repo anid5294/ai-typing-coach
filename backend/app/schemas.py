@@ -22,7 +22,7 @@ class SessionStartIn(BaseModel):
 class SessionStartOut(BaseModel):
     session_id: int
     started_at: datetime
-    propmt: str
+    prompt: str
     model_config = ConfigDict(from_attributes=True)
 
 class KeystrokeEventIn(BaseModel):
