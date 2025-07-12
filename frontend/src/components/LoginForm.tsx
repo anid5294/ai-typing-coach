@@ -2,9 +2,10 @@ import React, { useState } from "react";
 
 type Props = {
   onLogin: (token: string) => void;
+  onSwitchToSignup: () => void;
 };
 
-export function LoginForm({ onLogin }: Props) {
+export function LoginForm({ onLogin, onSwitchToSignup }: Props) {
   // 1) form state
   const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
@@ -74,6 +75,15 @@ export function LoginForm({ onLogin }: Props) {
       <button type="submit" style={{ marginTop: 12, width: "100%" }}>
         Log In
       </button>
+      <div style={{ marginTop: 12, textAlign: "center" }}>
+        <button 
+          type="button" 
+          onClick={onSwitchToSignup}
+          style={{ background: "none", border: "none", color: "blue", textDecoration: "underline", cursor: "pointer" }}
+        >
+          Don't have an account? Sign up
+        </button>
+      </div>
     </form>
   );
 }
