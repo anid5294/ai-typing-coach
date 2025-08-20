@@ -111,6 +111,20 @@ export function TypingArea({ token }: { token: string }) {
             placeholder="Start typing here..."
             value={userInput}
             onChange={handleInputChange}
+            onPaste={(e) => e.preventDefault()}
+            onCopy={(e) => e.preventDefault()}
+            onCut={(e) => e.preventDefault()}
+            onDrop={(e) => e.preventDefault()}
+            onContextMenu={(e) => e.preventDefault()}
+            onKeyDown={(e) => {
+              if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'v') {
+                e.preventDefault();
+              }
+            }}
+            autoComplete="off"
+            autoCorrect="off"
+            autoCapitalize="off"
+            spellCheck={false}
           />
           {error && (
             <div style={{ color: "red", marginTop: 8 }}>{error}</div>
