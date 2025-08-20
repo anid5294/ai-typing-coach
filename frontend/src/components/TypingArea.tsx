@@ -29,6 +29,19 @@ export function TypingArea({ token }: { token: string }) {
     updateUserInput(newInput);
   };
   
+  // Helper function to check if text is completed
+  const isTextCompleted = () => {
+    return userInput === targetText || userInput.trim() === targetText.trim();
+  };
+  
+  // Auto-finish when user completes the text
+  useEffect(() => {
+    if (isTextCompleted() && !summary && !isFinishing) {
+      // Finish immediately to preserve accurate WPM timing
+      handleFinish();
+    }
+  }, [userInput, targetText, summary, isFinishing]);
+  
   const renderTextWithHighlight = () => {
     return targetText.split('').map((char, index) => {
       let className = '';
@@ -65,6 +78,32 @@ export function TypingArea({ token }: { token: string }) {
             <div className="typing-display">
               {renderTextWithHighlight()}
             </div>
+            {isTextCompleted() && !summary && (
+              <div style={{ 
+                marginTop: 8, 
+                padding: "8px", 
+                backgroundColor: "#d4edda", 
+                color: "#155724", 
+                borderRadius: "4px",
+                textAlign: "center",
+                fontWeight: "bold"
+              }}>
+                ✓ Text completed! Session will finish automatically...
+              </div>
+            )}
+            {userInput.length > 0 && userInput.length < targetText.length && (
+              <div style={{ 
+                marginTop: 8, 
+                padding: "4px 8px", 
+                backgroundColor: "#e2e3e5", 
+                color: "#495057", 
+                borderRadius: "4px",
+                textAlign: "center",
+                fontSize: "14px"
+              }}>
+                Progress: {userInput.length}/{targetText.length} characters ({Math.round((userInput.length / targetText.length) * 100)}%)
+              </div>
+            )}
           </div>
           <textarea
             className="typing-input"
@@ -78,10 +117,21 @@ export function TypingArea({ token }: { token: string }) {
           )}
           <button 
             onClick={handleFinish} 
-            disabled={isFinishing}
-            style={{ marginTop: 10, padding: "8px 16px", fontSize: "14px" }}
+            disabled={isFinishing || isTextCompleted()}
+            style={{ 
+              marginTop: 10, 
+              padding: "8px 16px", 
+              fontSize: "14px",
+              backgroundColor: isTextCompleted() ? "#6c757d" : "#007bff",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: isTextCompleted() ? "not-allowed" : "pointer"
+            }}
           >
-            {isFinishing ? "Finishing..." : "Finish Session"}
+            {isFinishing ? "Finishing..." : 
+             isTextCompleted() ? "Auto-completing..." : 
+             "Finish Session"}
           </button>
         </>
       ) : (

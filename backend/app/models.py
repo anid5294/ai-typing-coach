@@ -14,6 +14,7 @@ class Session(Base):
     id         = Column(Integer, primary_key=True, index=True)
     user_id    = Column(Integer, ForeignKey("users.id"), nullable=False)
     started_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc))
+    typing_started_at = Column(DateTime(timezone=True), nullable=True)  # When user actually started typing
     ended_at   = Column(DateTime(timezone=True), nullable=True)
     events     = relationship("KeystrokeEvent", back_populates="session")
     target_text = Column(Text, nullable=False)
